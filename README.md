@@ -13,7 +13,7 @@
 版权：
 ---
 
-    此系统基于Player修改而来，Player基于GNU General Public License
+    此系统基于Player修改而来，基于GNU General Public License
     此系统由'Lyeemax'独立开发
     版权所有人为武汉库柏特科技有限责任公司
 关于维护：
