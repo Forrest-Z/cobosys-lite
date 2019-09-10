@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
-project(Cartoslam)
 
-set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wno-reorder -O2 -DRRLOG")
 
@@ -17,31 +14,11 @@ add_library(litedriverdef INTERFACE)
 target_compile_features(litedriverdef INTERFACE cxx_auto_type)
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY)
-set(CMAKE_MODULE_PATH ~/catkin_ws/src/cartographer/cmake/modules)
 
-set(cartographer_DIR ~/catkin_ws/install_isolated/share/cartographer)
-find_package(cartographer REQUIRED)
-include("${CARTOGRAPHER_CMAKE_DIR}/functions.cmake")
-set(BUILD_SHARED_LIBS OFF)
-google_initialize_cartographer_project()
-google_enable_testing()
-
-include(FindPkgConfig)
-
-
-find_package(LuaGoogle REQUIRED)
-find_package(Eigen3 REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system iostreams)
 
 
 INCLUDE_DIRECTORIES(/usr/include/eigen3)
-INCLUDE_DIRECTORIES(~/catkin_ws/src/cartographer)
-INCLUDE_DIRECTORIES(~/catkin_ws/build_isolated/cartographer/install)
 INCLUDE_DIRECTORIES(/usr/local/include/player-3.1/)
-include_directories(/usr/include/lua5.2)
-INCLUDE_DIRECTORIES(~/catkin_ws/install_isolated/include)
-
-
 add_library(${PROJECT_NAME} SHARED ${ALL_SRCS})
 target_link_libraries(${PROJECT_NAME} PUBLIC cartographer)
 target_link_libraries(${PROJECT_NAME} PUBLIC litedriverdef ${LIB_CONFIG})
