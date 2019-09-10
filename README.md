@@ -14,12 +14,12 @@
 ---
 
     此系统基于Player修改而来，Player基于GNU General Public License
-    此系统由[Lyeemax](unicorn@hust.edu.cn)独立开发
+    此系统由'Lyeemax'独立开发
     版权所有人为武汉库柏特科技有限责任公司
 关于维护：
 ---
 
-    本版本迁移至库柏特私有仓库后，不再由[Lyeemax](unicorn@hust.edu.cn)维护
+    本版本迁移至库柏特私有仓库后，不再由'Lyeemax'维护
     如由问题，请联系：13657230818/Wechat:Ruochenpro
 致谢：
 ---
