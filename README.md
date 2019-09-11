@@ -1,4 +1,4 @@
- cobosys-lite: 一个轻量先进的移动机器人操作系统</br>
+ cobosys-lite: 轻量先进的移动机器人操作系统</br>
  ===
      
      
