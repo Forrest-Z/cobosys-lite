@@ -506,15 +506,14 @@ Quit(int signum)
 void
 PrintVersion()
 {
-  fprintf(stderr, "Player v.%s\n", PLAYER_VERSION);
+  //fprintf(stderr, "Player v.%s\n", PLAYER_VERSION);
 }
 
 void
 PrintCopyrightMsg()
 {
-  fprintf(stderr,"\n* A Cross-platfrom Mobile Robotics Library.* \nVersion-2019.05\n");
-  fprintf(stderr, "\nBased on Player,Maintained by Unicorn and Raysunner.\n");
-  fprintf(stderr, "\nCommercial Release,Consult unicorn@hust.edu.cn for Details .\n");
+  fprintf(stderr,"\n*Cobosys: A Cross-platfrom Mobile Robotics Library.* \nVersion-2019.09\n");
+  
 }
 
 void
