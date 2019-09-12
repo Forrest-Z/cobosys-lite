@@ -21,18 +21,22 @@
     new installed ubuntu16.04.5 compile passed
     
 1.安装环境及依赖：
->sudo apt-get update
->sudo apt-get install cmake git
->git clone https://github.com/lyeemax/cobosys-lite.git
+>sudo apt-get update </br>
+>sudo apt-get install cmake git curl autoconf </br>
+>git clone https://github.com/lyeemax/cobosys-lite.git 
 
 2.安装主程序：</br>
->sudo apt-get install libjpeg-dev libfltk1.3-dev libyaml-cpp-dev libgnomecanvas2-dev</br>
+>sudo apt-get install libjpeg-dev libeigen3-dev libfltk1.3-dev libyaml-cpp-dev libgnomecanvas2-dev</br>
 >cd cobosys-lite</br>
 >mkdir build && cd build </br>
 >cmake ..</br>
 >make -j12</br>
 >sudo make install</br>
 >sudo cp  -r /usr/local/lib/libplayer* /usr/lib</br>
+>>可以看到
+>>The following 11 drivers were compiled into Player:
+>>RobotBase Rplidar To3d Toscanangle amcl linuxjoystick mapfile nd snd vfh wavefront </br>
+>>说明安装成功
 
 3.安装ceres优化库</br>
 >sudo apt-get install -y google-mock libboost-all-dev libcairo2-dev libcurl4-openssl-dev libeigen3-dev libgflags-dev libgoogle-glog-dev liblua5.2-dev libsuitesparse-dev ninja-build python-sphinx</br>
@@ -49,9 +53,11 @@
 >git clone https://github.com/google/protobuf.git</br>
 >cd protobuf</br>
 >git checkout tags/${VERSION}</br>
+>./autogen.sh
+>./configure
 >mkdir build</br>
 >cd build</br>
->cmake -G Ninja \-DCMAKE_POSITION_INDEPENDENT_CODE=ON \-DCMAKE_BUILD_TYPE=Release \ -Dprotobuf_BUILD_TESTS=OFF \../cmake </br>
+>cmake -G Ninja -Dprotobuf_BUILD_TESTS=OFF \../cmake </br>
 >ninja</br>
 >sudo ninja install</br>
 
@@ -60,6 +66,7 @@
 >mkdir build &&cd build </br>
 >cmake ..</br>
 >make -j12 </br>
+>>在./Cobotslam下生成libCobotslam.so即完成了安装
 
 6.安装stage仿真（非必须）</br>
 >git clone https://github.com/lyeemax/Stage.git</br>
