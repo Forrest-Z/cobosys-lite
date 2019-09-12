@@ -53,8 +53,8 @@
 >git clone https://github.com/google/protobuf.git</br>
 >cd protobuf</br>
 >git checkout tags/${VERSION}</br>
->./autogen.sh
->./configure
+>./autogen.sh </br>
+>./configure </br>
 >mkdir build</br>
 >cd build</br>
 >cmake -G Ninja -Dprotobuf_BUILD_TESTS=OFF \../cmake </br>
