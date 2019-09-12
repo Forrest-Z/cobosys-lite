@@ -33,7 +33,7 @@
 >make -j12</br>
 >sudo make install</br>
 >sudo cp  -r /usr/local/lib/libplayer* /usr/lib</br>
->>可以看到
+>>在终端输入player可以看到
 >>The following 11 drivers were compiled into Player:
 >>RobotBase Rplidar To3d Toscanangle amcl linuxjoystick mapfile nd snd vfh wavefront </br>
 >>说明安装成功
