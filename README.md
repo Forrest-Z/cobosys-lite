@@ -18,7 +18,14 @@
 
 安装：
 ---
-1.安装主程序：</br>
+    new installed ubuntu16.04.5 compile passed
+    
+1.安装环境及依赖：
+>sudo apt-get update
+>sudo apt-get install cmake git
+>git clone https://github.com/lyeemax/cobosys-lite.git
+
+2.安装主程序：</br>
 >sudo apt-get install libjpeg-dev libfltk1.3-dev libyaml-cpp-dev libgnomecanvas2-dev</br>
 >cd cobosys-lite</br>
 >mkdir build && cd build </br>
@@ -27,7 +34,7 @@
 >sudo make install</br>
 >sudo cp  -r /usr/local/lib/libplayer* /usr/lib</br>
 
-2.安装ceres优化库</br>
+3.安装ceres优化库</br>
 >sudo apt-get install -y google-mock libboost-all-dev libcairo2-dev libcurl4-openssl-dev libeigen3-dev libgflags-dev libgoogle-glog-dev liblua5.2-dev libsuitesparse-dev ninja-build python-sphinx</br>
 >cd extensions/cobotslam</br>
 >cd ceres-solver</br>
@@ -37,7 +44,7 @@
 >ninja</br>
 >sudo ninja install</br>
 
-3.安装protobuf</br>
+4.安装protobuf</br>
 >VERSION="v3.4.1"</br>
 >git clone https://github.com/google/protobuf.git</br>
 >cd protobuf</br>
@@ -48,13 +55,13 @@
 >ninja</br>
 >sudo ninja install</br>
 
-4.编译cartoslam</br>
+5.编译cartoslam</br>
 >cd ..</br>
 >mkdir build &&cd build </br>
 >cmake ..</br>
 >make -j12 </br>
 
-5.安装stage仿真（非必须）</br>
+6.安装stage仿真（非必须）</br>
 >git clone https://github.com/lyeemax/Stage.git</br>
 >cd stage</br>
 >mkdir build</br>
