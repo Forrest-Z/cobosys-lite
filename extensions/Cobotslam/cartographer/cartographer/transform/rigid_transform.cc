@@ -28,6 +28,7 @@ namespace transform {
 
 namespace {
 
+//根据lua字典获取translation,再转换成Vector3d
 Eigen::Vector3d TranslationFromDictionary(
     common::LuaParameterDictionary* dictionary) {
   const std::vector<double> translation = dictionary->GetArrayValuesAsDoubles();
@@ -36,7 +37,7 @@ Eigen::Vector3d TranslationFromDictionary(
 }
 
 }  // namespace
-
+//从欧拉角转成四元数
 Eigen::Quaterniond RollPitchYaw(const double roll, const double pitch,
                                 const double yaw) {
   const Eigen::AngleAxisd roll_angle(roll, Eigen::Vector3d::UnitX());
@@ -45,11 +46,14 @@ Eigen::Quaterniond RollPitchYaw(const double roll, const double pitch,
   return yaw_angle * pitch_angle * roll_angle;
 }
 
+
+//从lua字典获取刚体变换translation（平移）和rotation（旋转）
 transform::Rigid3d FromDictionary(common::LuaParameterDictionary* dictionary) {
   const Eigen::Vector3d translation =
       TranslationFromDictionary(dictionary->GetDictionary("translation").get());
 
   auto rotation_dictionary = dictionary->GetDictionary("rotation");
+//检查字典有没有w，有说明是四元数
   if (rotation_dictionary->HasKey("w")) {
     const Eigen::Quaterniond rotation(rotation_dictionary->GetDouble("w"),
                                       rotation_dictionary->GetDouble("x"),
@@ -58,6 +62,7 @@ transform::Rigid3d FromDictionary(common::LuaParameterDictionary* dictionary) {
     CHECK_NEAR(rotation.norm(), 1., 1e-9);
     return transform::Rigid3d(translation, rotation);
   } else {
+//否则是欧拉角
     const std::vector<double> rotation =
         rotation_dictionary->GetArrayValuesAsDoubles();
     CHECK_EQ(3, rotation.size()) << "Need (roll, pitch, yaw) for rotation.";

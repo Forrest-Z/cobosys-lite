@@ -34,18 +34,28 @@ ImuTracker::ImuTracker(const double imu_gravity_time_constant,
       orientation_(Eigen::Quaterniond::Identity()),
       gravity_vector_(Eigen::Vector3d::UnitZ()),
       imu_angular_velocity_(Eigen::Vector3d::Zero()) {}
-
+      //对imu做时间增量，得到变化后的imu朝向和重力加速度方向
 void ImuTracker::Advance(const common::Time time) {
   CHECK_LE(time_, time);
   const double delta_t = common::ToSeconds(time - time_);
   const Eigen::Quaterniond rotation =
       transform::AngleAxisVectorToRotationQuaternion(
           Eigen::Vector3d(imu_angular_velocity_ * delta_t));
+  //四元数乘后要归一化
   orientation_ = (orientation_ * rotation).normalized();
+  //为什么求逆？？？？？？？
+  //TODO
   gravity_vector_ = rotation.conjugate() * gravity_vector_;
   time_ = time;
 }
-
+/*
+更新imu测量得到的加速度。
+参数：vector3d，测量值
+1),dt=t_-t;
+2),alpha=1-e^(-dt/g);
+3),gravity_vector_=(1-alpha)*gv_+alpha*imu_line;
+4),更新orientation_
+*/
 void ImuTracker::AddImuLinearAccelerationObservation(
     const Eigen::Vector3d& imu_linear_acceleration) {
   // Update the 'gravity_vector_' with an exponential moving average using the

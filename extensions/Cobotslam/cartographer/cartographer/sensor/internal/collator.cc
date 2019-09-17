@@ -24,11 +24,14 @@ void Collator::AddTrajectory(
     const std::unordered_set<std::string>& expected_sensor_ids,
     const Callback& callback) {
   for (const auto& sensor_id : expected_sensor_ids) {
+      //对于每一个轨迹+传感器,设置一个key
     const auto queue_key = QueueKey{trajectory_id, sensor_id};
+      //添加一个名为key的队列,并设置回调函数处理data
     queue_.AddQueue(queue_key,
                     [callback, sensor_id](std::unique_ptr<Data> data) {
                       callback(sensor_id, std::move(data));
                     });
+      //map<int,vector<key>>:添加轨迹对应的key
     queue_keys_[trajectory_id].push_back(queue_key);
   }
 }

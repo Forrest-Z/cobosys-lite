@@ -1,25 +1,31 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(Cobotslam)
+#编译器要支持C++11
 set(CMAKE_CXX_STANDARD 11)
 
-# catkin sets this to "on" by default, which causes linking problems
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS ON)
+#用IDE调试的时候可以用这个或者FORCE DEBUG
+#set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 
-# find GMock globally from here, or else it will complains about duplicated GTest/GMock targets
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cartographer/cmake/modules/")
-find_package(GMock REQUIRED)
+#引入GMock
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cartographer/cmake/modules/")
+#find_package(GMock REQUIRED)
 
-# use configuration files from the source location instead of the install location
+#message(STATUS ${GMock_VERSION})
+
+#直接使用源文件的配置文件而不是安装后的配置文件
 set(CARTOGRAPHER_CONFIGURATION_FILES_DIRECTORY "${CMAKE_SOURCE_DIR}/cartographer/configuration_files"
   CACHE PATH ".lua config file directory")
 
-# add the libcartographer directory
+# 编译cartographer
 add_subdirectory(cartographer)
 
-# point the catkin packages to the special Findcartographer.cmake module which is run when find_package(cartographer)
-# is called; this module just checks if libcartographer is in the build tree at this point
+
+#引入编译后的cartographer，find_package(cartographer)，编译cartoslam
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
-
+# 编译Cartoslam
 add_subdirectory(Cartoslam)
+
+#动态链接库直接拷贝过去用就行，不用安装
 

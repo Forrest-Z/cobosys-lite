@@ -27,9 +27,11 @@ TimestampedTransform Interpolate(const TimestampedTransform& start,
 
   const double duration = common::ToSeconds(end.time - start.time);
   const double factor = common::ToSeconds(time - start.time) / duration;
+//对平移线性插值
   const Eigen::Vector3d origin =
       start.transform.translation() +
       (end.transform.translation() - start.transform.translation()) * factor;
+//对四元数球面插值
   const Eigen::Quaterniond rotation =
       Eigen::Quaterniond(start.transform.rotation())
           .slerp(factor, Eigen::Quaterniond(end.transform.rotation()));

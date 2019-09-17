@@ -27,7 +27,7 @@ struct TimestampedTransform {
   common::Time time;
   transform::Rigid3d transform;
 };
-
+//插值
 TimestampedTransform Interpolate(const TimestampedTransform& start,
                                  const TimestampedTransform& end,
                                  const common::Time time);

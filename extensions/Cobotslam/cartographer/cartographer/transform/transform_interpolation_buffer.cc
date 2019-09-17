@@ -25,7 +25,7 @@
 
 namespace cartographer {
 namespace transform {
-
+//从轨迹中构建{时间，位姿}buffer，用于插值
 TransformInterpolationBuffer::TransformInterpolationBuffer(
     const mapping::proto::Trajectory& trajectory) {
   for (const mapping::proto::Trajectory::Node& node : trajectory.node()) {
@@ -48,19 +48,23 @@ bool TransformInterpolationBuffer::Has(const common::Time time) const {
   }
   return earliest_time() <= time && time <= latest_time();
 }
-
+//按时间查找变换
 transform::Rigid3d TransformInterpolationBuffer::Lookup(
     const common::Time time) const {
   CHECK(Has(time)) << "Missing transform for: " << time;
+
+ //lower_bound,二分查找的函数,查找序列中的第一个出现的值大于等于time的位置。（非小于）
   const auto end = std::lower_bound(
       timestamped_transforms_.begin(), timestamped_transforms_.end(), time,
       [](const TimestampedTransform& timestamped_transform,
          const common::Time time) {
         return timestamped_transform.time < time;
       });
+  //直接找到了，返回
   if (end->time == time) {
     return end->transform;
   }
+  //没有找到，插值
   const auto start = std::prev(end);
   return Interpolate(*start, *end, time).transform;
 }

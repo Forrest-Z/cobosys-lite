@@ -99,12 +99,22 @@ Eigen::Quaternion<T> AngleAxisVectorToRotationQuaternion(
 }
 
 // Projects 'transform' onto the XY plane.
+/*投影到2维平面xy。
+具体：
+1,取平移中的[dx,dy],
+2,xy平面的平移角度是yaw.
+*/
 template <typename T>
 Rigid2<T> Project2D(const Rigid3<T>& transform) {
   return Rigid2<T>(transform.translation().template head<2>(),
                    GetYaw(transform));
 }
-
+/*
+将2维变换转换为3维变换。
+具体:
+1,平移矩阵为[dx,dy,0]
+2,z方向单位旋转。
+*/
 // Embeds 'transform' into 3D space in the XY plane.
 template <typename T>
 Rigid3<T> Embed3D(const Rigid2<T>& transform) {
@@ -113,7 +123,10 @@ Rigid3<T> Embed3D(const Rigid2<T>& transform) {
       Eigen::AngleAxis<T>(transform.rotation().angle(),
                           Eigen::Matrix<T, 3, 1>::UnitZ()));
 }
+/*
+序列化和反序列化的函数,实现在.cc文件
 
+*/
 // Conversions between Eigen and proto.
 Rigid2d ToRigid2(const proto::Rigid2d& transform);
 Eigen::Vector2d ToEigen(const proto::Vector2d& vector);

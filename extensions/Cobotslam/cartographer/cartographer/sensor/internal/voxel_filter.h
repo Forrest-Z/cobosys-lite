@@ -34,6 +34,7 @@ namespace sensor {
 class VoxelFilter {
  public:
   // 'size' is the length of a voxel edge.
+  //size大分辨率的cell只能放一个点云，用分辨率调整滤波
   explicit VoxelFilter(float size) : resolution_(size) {}
 
   VoxelFilter(const VoxelFilter&) = delete;

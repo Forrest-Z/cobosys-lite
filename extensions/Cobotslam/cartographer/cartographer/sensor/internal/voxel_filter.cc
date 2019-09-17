@@ -24,7 +24,7 @@ namespace cartographer {
 namespace sensor {
 
 namespace {
-
+    //返回小于最大距离的点云
 PointCloud FilterByMaxRange(const PointCloud& point_cloud,
                             const float max_range) {
   PointCloud result;
@@ -39,10 +39,12 @@ PointCloud FilterByMaxRange(const PointCloud& point_cloud,
 PointCloud AdaptivelyVoxelFiltered(
     const proto::AdaptiveVoxelFilterOptions& options,
     const PointCloud& point_cloud) {
+    //点云足够稀疏了，不再滤波
   if (point_cloud.size() <= options.min_num_points()) {
     // 'point_cloud' is already sparse enough.
     return point_cloud;
   }
+//分辨率越大，点越少，最大的分辨率了，还是有很多点，可以认为点云很多很大，再滤波就没有细节了（可能作者要表达这个意思）
   PointCloud result = VoxelFilter(options.max_length()).Filter(point_cloud);
   if (result.size() >= options.min_num_points()) {
     // Filtering with 'max_length' resulted in a sufficiently dense point cloud.
@@ -59,6 +61,7 @@ PointCloud AdaptivelyVoxelFiltered(
       // Binary search to find the right amount of filtering. 'low_length' gave
       // a sufficiently dense 'result', 'high_length' did not. We stop when the
       // edge length is at most 10% off.
+      //滤波的限度10%
       while ((high_length - low_length) / low_length > 1e-1f) {
         const float mid_length = (low_length + high_length) / 2.f;
         const PointCloud candidate =
@@ -66,8 +69,10 @@ PointCloud AdaptivelyVoxelFiltered(
         if (candidate.size() >= options.min_num_points()) {
           low_length = mid_length;
           result = candidate;
+          //剩多了，分辨率调大，把中间结果再滤
         } else {
           high_length = mid_length;
+            //剩少了，分辨率调小，中间结果不要了
         }
       }
       return result;
@@ -77,18 +82,22 @@ PointCloud AdaptivelyVoxelFiltered(
 }
 
 }  // namespace
-
+//传入点云的voxel索引
 PointCloud VoxelFilter::Filter(const PointCloud& point_cloud) {
   PointCloud results;
   for (const Eigen::Vector3f& point : point_cloud) {
     auto it_inserted = voxel_set_.insert(IndexToKey(GetCellIndex(point)));
+    //std::cout<<IndexToKey(GetCellIndex(point))<<std::endl;
+    //是否插入成功
     if (it_inserted.second) {
+        //std::cout<<it_inserted.second<<std::endl;
       results.push_back(point);
+     // std::cout<<results.back()<<std::endl;
     }
   }
   return results;
 }
-
+//传入点云的voxel索引
 TimedPointCloud VoxelFilter::Filter(const TimedPointCloud& timed_point_cloud) {
   TimedPointCloud results;
   for (const Eigen::Vector4f& point : timed_point_cloud) {
@@ -100,13 +109,14 @@ TimedPointCloud VoxelFilter::Filter(const TimedPointCloud& timed_point_cloud) {
   }
   return results;
 }
-
+//传入ranges数据
 std::vector<sensor::TimedPointCloudOriginData::RangeMeasurement>
 VoxelFilter::Filter(
     const std::vector<sensor::TimedPointCloudOriginData::RangeMeasurement>&
         range_measurements) {
   std::vector<sensor::TimedPointCloudOriginData::RangeMeasurement> results;
   for (const auto& range_measurement : range_measurements) {
+      //处理方法和点云一样
     auto it_inserted = voxel_set_.insert(
         IndexToKey(GetCellIndex(range_measurement.point_time.head<3>())));
     if (it_inserted.second) {
@@ -116,6 +126,7 @@ VoxelFilter::Filter(
   return results;
 }
 
+//index的高位（X-i）放在前32位，中间32位放index的中间位(Y-i)，后32位放index最后一位(Z-i)
 VoxelFilter::KeyType VoxelFilter::IndexToKey(const Eigen::Array3i& index) {
   KeyType k_0(static_cast<uint32>(index[0]));
   KeyType k_1(static_cast<uint32>(index[1]));
@@ -124,12 +135,13 @@ VoxelFilter::KeyType VoxelFilter::IndexToKey(const Eigen::Array3i& index) {
 }
 
 Eigen::Array3i VoxelFilter::GetCellIndex(const Eigen::Vector3f& point) const {
+    //把点按照格子的大小把坐标值分为索引
   Eigen::Array3f index = point.array() / resolution_;
   return Eigen::Array3i(common::RoundToInt(index.x()),
                         common::RoundToInt(index.y()),
                         common::RoundToInt(index.z()));
 }
-
+//读参数
 proto::AdaptiveVoxelFilterOptions CreateAdaptiveVoxelFilterOptions(
     common::LuaParameterDictionary* const parameter_dictionary) {
   proto::AdaptiveVoxelFilterOptions options;
@@ -139,7 +151,7 @@ proto::AdaptiveVoxelFilterOptions CreateAdaptiveVoxelFilterOptions(
   options.set_max_range(parameter_dictionary->GetDouble("max_range"));
   return options;
 }
-
+//构造函数，传options
 AdaptiveVoxelFilter::AdaptiveVoxelFilter(
     const proto::AdaptiveVoxelFilterOptions& options)
     : options_(options) {}

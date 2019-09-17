@@ -14,46 +14,6 @@
 
 include(CMakeParseArguments)
 
-macro(_parse_arguments ARGS)
-  set(OPTIONS)
-  set(ONE_VALUE_ARG)
-  set(MULTI_VALUE_ARGS SRCS)
-  cmake_parse_arguments(ARG
-    "${OPTIONS}" "${ONE_VALUE_ARG}" "${MULTI_VALUE_ARGS}" ${ARGS})
-endmacro(_parse_arguments)
-
-macro(_common_compile_stuff VISIBILITY)
-  set(TARGET_COMPILE_FLAGS "${TARGET_COMPILE_FLAGS} ${GOOG_CXX_FLAGS}")
-
-  set_target_properties(${NAME} PROPERTIES
-    COMPILE_FLAGS ${TARGET_COMPILE_FLAGS})
-
-  target_include_directories(${NAME} PUBLIC ${PROJECT_NAME})
-  target_link_libraries(${NAME} PUBLIC ${PROJECT_NAME})
-endmacro(_common_compile_stuff)
-
-function(google_test NAME ARG_SRC)
-  add_executable(${NAME} ${ARG_SRC})
-  _common_compile_stuff("PRIVATE")
-
-  # Make sure that gmock always includes the correct gtest/gtest.h.
-  target_include_directories("${NAME}" SYSTEM PRIVATE
-    "${GMOCK_INCLUDE_DIRS}")
-  target_link_libraries("${NAME}" PUBLIC ${GMOCK_LIBRARIES})
-
-  add_test(${NAME} ${NAME})
-endfunction()
-
-function(google_binary NAME)
-  _parse_arguments("${ARGN}")
-
-  add_executable(${NAME} ${ARG_SRCS})
-
-  _common_compile_stuff("PRIVATE")
-
-  install(TARGETS "${NAME}" RUNTIME DESTINATION bin)
-endfunction()
-
 # Create a variable 'VAR_NAME'='FLAG'. If VAR_NAME is already set, FLAG is
 # appended.
 function(google_add_flag VAR_NAME FLAG)
@@ -128,7 +88,3 @@ macro(google_initialize_cartographer_project)
   include(${FILES_LIST_PATH})
 endmacro()
 
-macro(google_enable_testing)
-  enable_testing()
-  find_package(GMock REQUIRED)
-endmacro()

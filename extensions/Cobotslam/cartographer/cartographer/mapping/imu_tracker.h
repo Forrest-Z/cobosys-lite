@@ -50,8 +50,11 @@ class ImuTracker {
   const double imu_gravity_time_constant_;
   common::Time time_;
   common::Time last_linear_acceleration_time_;
+  //imu的朝向
   Eigen::Quaterniond orientation_;
+  //imu的重力加速度方向
   Eigen::Vector3d gravity_vector_;
+  //是个角轴的表示方法
   Eigen::Vector3d imu_angular_velocity_;
 };
 

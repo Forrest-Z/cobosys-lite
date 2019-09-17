@@ -26,6 +26,8 @@
 
 namespace cartographer {
 namespace transform {
+//基于时间有序的变换,支持在队列中按时间顺序查找,即使变换不存在于队列中，
+//任然支持相邻时间内的插值变换进行近似。作用与ROS的tf2函数族类似。
 
 // A time-ordered buffer of transforms that supports interpolated lookups.
 class TransformInterpolationBuffer {

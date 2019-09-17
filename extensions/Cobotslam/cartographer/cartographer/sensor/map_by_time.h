@@ -37,9 +37,11 @@ class MapByTime {
  public:
   // Appends data to a 'trajectory_id', creating trajectories as needed.
   void Append(const int trajectory_id, const DataType& data) {
+      //轨迹id从0开始
     CHECK_GE(trajectory_id, 0);
     auto& trajectory = data_[trajectory_id];
     if (!trajectory.empty()) {
+        //时间要大于之前的时间
       CHECK_GT(data.time, std::prev(trajectory.end())->first);
     }
     trajectory.emplace(data.time, data);
@@ -52,6 +54,7 @@ class MapByTime {
             const mapping::NodeId& node_id) {
     const int trajectory_id = node_id.trajectory_id;
     CHECK_GE(trajectory_id, 0);
+    //没有trajectory_id的数据，返回
     if (data_.count(trajectory_id) == 0) {
       return;
     }
@@ -204,6 +207,7 @@ class MapByTime {
   }
 
  private:
+    //键值为trajectory_id，<时间，传感器数据>
   std::map<int, std::map<common::Time, DataType>> data_;
 };
 
