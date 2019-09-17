@@ -40,7 +40,9 @@
 
 3.安装ceres优化库</br>
 >sudo apt-get install -y google-mock libboost-all-dev libcairo2-dev libcurl4-openssl-dev libeigen3-dev libgflags-dev libgoogle-glog-dev liblua5.2-dev libsuitesparse-dev ninja-build python-sphinx</br>
->cd extensions/cobotslam</br>
+>git clone https://github.com/ceres-solver/ceres-solver.git</br>
+>VERSION="1.13.0" </br>
+>git checkout tags/${VERSION} </br>
 >cd ceres-solver</br>
 >mkdir build</br>
 >cd build</br>
@@ -62,7 +64,7 @@
 >sudo ninja install</br>
 
 5.编译cartoslam</br>
->cd ..</br>
+>cd extensions/Cobotslam</br>
 >mkdir build &&cd build </br>
 >cmake ..</br>
 >make -j12 </br>
