@@ -46,7 +46,7 @@
 >cd ceres-solver</br>
 >mkdir build</br>
 >cd build</br>
->cmake -G Ninja -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release -Dprotobuf_BUILD_TESTS=OFF ../cmake</br>
+>cmake .. -G Ninja -DCXX11=ON </br>
 >ninja</br>
 >sudo ninja install</br>
 
@@ -59,7 +59,7 @@
 >./configure </br>
 >mkdir build</br>
 >cd build</br>
->cmake -G Ninja -Dprotobuf_BUILD_TESTS=OFF \../cmake </br>
+>cmake -G Ninja -DCMAKE_POSITION_INDEPENDENT_CODE=ON \ -DCMAKE_BUILD_TYPE=Release \ -Dprotobuf_BUILD_TESTS=OFF \ ../cmake</br>
 >ninja</br>
 >sudo ninja install</br>
 
